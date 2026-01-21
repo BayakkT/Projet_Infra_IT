@@ -34,16 +34,16 @@ def index():
     html += "<a href='/recherche'>🔍 Rechercher</a> | "
     html += "<a href='/login_user'>👤 Login User</a> | "
     html += "<a href='/login_admin'>🔐 Login Admin</a> | "
-    html += "<a href='/logout'>🚪 Logout</a>"
+    html += "<a href='/logout'>Logout</a>"
     html += "</p>"
 
     html += "<ul>"
     for livre in livres:
         html += f"<li><b>{livre['titre']}</b> ({livre['auteur']}) "
         if livre['stock'] > 0:
-            html += f"✅ Stock: {livre['stock']} <a href='/emprunter/{livre['id']}' style='color:green;'>[EMPRUNTER]</a>"
+            html += f"✅ Stock: {livre['stock']} <a href='/emprunter/{livre['id']}' style='color:pink;'>[EMPRUNTER]</a>"
         else:
-            html += "❌ <span style='color:red'>Rupture</span>"
+            html += "❌ <span style='color:purple'>Rupture</span>"
         html += "</li><br>"
     html += "</ul>"
     return html
