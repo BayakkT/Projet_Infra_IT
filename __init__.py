@@ -69,6 +69,32 @@ def emprunter(id_livre):
     conn.close()
     return redirect('/')
 
+# =========================
+# ROUTE 2.truc : Consultation
+# =========================
+
+@app.route('/consultation/')
+def consultation():
+    conn = get_db_connection()
+    livres = conn.execute('SELECT * FROM livres').fetchall()
+    conn.close()
+
+    html = "<h1>📄 Consultation (Livres)</h1>"
+    html += "<p><a href='/'>🏠 Accueil</a></p>"
+
+    if not livres:
+        return html + "<p>Aucun livre dans la base.</p>"
+
+    html += "<table border='1' cellpadding='6'>"
+    html += "<tr><th>ID</th><th>Titre</th><th>Auteur</th><th>Stock</th></tr>"
+    for livre in livres:
+        html += f"<tr><td>{livre['id']}</td><td>{livre['titre']}</td><td>{livre['auteur']}</td><td>{livre['stock']}</td></tr>"
+    html += "</table>"
+
+    return html
+
+
+
 
 # =========================
 # ROUTE 3 : RECHERCHE
