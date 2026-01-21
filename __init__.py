@@ -43,7 +43,7 @@ def index():
         if livre['stock'] > 0:
             html += f"✅ Stock: {livre['stock']} <a href='/emprunter/{livre['id']}' style='color:pink;'>[EMPRUNTER]</a>"
         else:
-            html += "❌ <span style='color:purple'>Rupture</span>"
+            html += "<span style='color:purple'>OUT OF STOCK :( </span>"
         html += "</li><br>"
     html += "</ul>"
     return html
