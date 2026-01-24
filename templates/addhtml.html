@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter une tâche</title>
+    <title>ADD A TASK</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
+        body { font: 'Magneto', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
         .form-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
         label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9em; }
@@ -16,7 +16,7 @@
         .retour { display: block; text-align: center; margin-top: 20px; color: #7f8c8d; text-decoration: none; font-size: 0.9em; }
         .retour:hover { text-decoration: underline; }
         /* Style pour les erreurs */
-        .error-message { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+        .error-message { background-color: #f8d7da; color: purple; padding: 10px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
@@ -29,11 +29,11 @@
     {% endif %}
 
     <form method="post">
-        <label for="titre">Titre de la tâche <span style="color: red;">*</span></label>
+        <label for="titre">Titre de la tâche <span style="color: purple;">*</span></label>
         <input type="text" id="titre" name="titre" placeholder="Ex: Faire les courses" required>
 
         <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" placeholder="Détails de la tâche..."></textarea>
+        <textarea id="description" name="description" rows="4" placeholder="Details"></textarea>
 
         <label for="date_echeance">Date d'échéance</label>
         <input type="date" id="date_echeance" name="date_echeance">
