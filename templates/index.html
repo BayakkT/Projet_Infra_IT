@@ -1,89 +1,309 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionnaire de Tâches</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background-color: #f8f9fa; color: #333; }
-        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
-        
-        .btn-add { display: inline-block; width: auto; padding: 12px 25px; background: #28a745; color: white; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; margin-bottom: 20px; }
-        .btn-add:hover { background: #218838; transform: translateY(-1px); }
-        
-        .tache-card { border: 1px solid #eee; padding: 20px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .tache-card:hover { border-color: #007bff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        
-        /* Style spécial pour les tâches terminées */
-        .terminee { background-color: #fcfcfc; border-left: 5px solid #6c757d; opacity: 0.7; }
-        .terminee h3 { text-decoration: line-through; color: #6c757d; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Tâches</title>
 
-        .contenu h3 { margin: 0 0 5px 0; font-size: 1.2em; }
-        .contenu p { margin: 5px 0; color: #555; font-size: 0.95em; }
-        .contenu small { color: #888; display: block; margin-top: 8px; }
+  <!-- Police girly -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-        .actions { display: flex; gap: 10px; }
-        form { margin: 0; }/
-        
-        button { cursor: pointer; padding: 8px 12px; border: none; border-radius: 5px; font-size: 14px; font-weight: 500; transition: 0.2s; display: flex; align-items: center; gap: 5px; }
-        .btn-delete { background: #fff; color: #dc3545; border: 1px solid #dc3545; }
-        .btn-delete:hover { background: #dc3545; color: white; }
-        
-        .btn-check { background: #007bff; color: white; }
-        .btn-check:hover { background: #0056b3; }
-        .btn-undo { background: #6c757d; color: white; } /* Pour annuler l'état terminé */
-    </style>
+  <style>
+    :root{
+      --bg1:#fff7fb;
+      --bg2:#f6f0ff;
+      --card:#ffffff;
+      --text:#2c2a33;
+      --muted:#7a7486;
+
+      --pink:#ff4fa3;
+      --pink2:#ff8ac7;
+      --lav:#a77dff;
+      --lav2:#d2c2ff;
+
+      --danger:#ff3b5c;
+      --shadow: 0 18px 50px rgba(33, 18, 68, .10);
+      --shadow2: 0 10px 25px rgba(33, 18, 68, .08);
+      --radius: 20px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: "Quicksand", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 20% 10%, var(--bg2), transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, #ffe3f2, transparent 55%),
+        linear-gradient(180deg, var(--bg1), #ffffff);
+      min-height:100vh;
+      padding: 40px 16px;
+    }
+
+    .container{
+      max-width: 860px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(167,125,255,.18);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .title h1{
+      font-family: "Playfair Display", serif;
+      font-size: 34px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+
+    .badge{
+      font-size: 12px;
+      font-weight: 700;
+      color: #6b4bd6;
+      background: rgba(167,125,255,.18);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .btn-add{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight: 800;
+      letter-spacing:.3px;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      box-shadow: 0 12px 25px rgba(255,79,163,.22);
+      border: 0;
+      transform: translateY(0);
+      transition: transform .15s ease, filter .15s ease;
+      user-select:none;
+    }
+    .btn-add:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+    .btn-add:active{
+      transform: translateY(0);
+      filter: brightness(.98);
+    }
+
+    .liste-taches{
+      margin-top: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .tache-card{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 16px;
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid rgba(255,79,163,.12);
+      box-shadow: var(--shadow2);
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      position: relative;
+      overflow:hidden;
+    }
+
+    /* petit glow */
+    .tache-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 120px at 20% 0%, rgba(255,79,163,.14), transparent 55%),
+                  radial-gradient(500px 140px at 90% 20%, rgba(167,125,255,.14), transparent 55%);
+      pointer-events:none;
+    }
+
+    .tache-card:hover{
+      transform: translateY(-1px);
+      border-color: rgba(167,125,255,.22);
+      box-shadow: 0 16px 35px rgba(33, 18, 68, .12);
+    }
+
+    .contenu{
+      position:relative;
+      z-index:1;
+      width: 100%;
+    }
+
+    .contenu h3{
+      margin:0 0 6px 0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing:.2px;
+    }
+
+    .contenu p{
+      margin: 6px 0 10px 0;
+      color: var(--muted);
+      line-height: 1.35;
+      white-space: pre-wrap;
+    }
+
+    .contenu small{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      color: #6f6a80;
+      background: rgba(255,138,199,.16);
+      border: 1px solid rgba(255,79,163,.14);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .terminee{
+      opacity: .76;
+      border-left: 6px solid rgba(167,125,255,.7);
+    }
+    .terminee h3{
+      text-decoration: line-through;
+      color: #6b6678;
+    }
+
+    .actions{
+      position:relative;
+      z-index:1;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-shrink:0;
+      margin-left: 6px;
+    }
+
+    form{ margin:0; }
+
+    button{
+      cursor:pointer;
+      border:0;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 800;
+      font-family: inherit;
+      transition: transform .12s ease, filter .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      box-shadow: 0 10px 18px rgba(33,18,68,.08);
+    }
+    button:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    button:active{ transform: translateY(0); filter: brightness(.98); }
+
+    .btn-check{
+      color: white;
+      background: linear-gradient(135deg, #35d07f, #20b7a2);
+    }
+    .btn-undo{
+      color: white;
+      background: linear-gradient(135deg, var(--lav), #6b4bd6);
+    }
+    .btn-delete{
+      color: white;
+      background: linear-gradient(135deg, var(--danger), #ff7aa0);
+    }
+
+    .empty{
+      text-align:center;
+      padding: 36px 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .empty .heart{
+      font-size: 28px;
+      display:block;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 600px){
+      .tache-card{ flex-direction: column; align-items: stretch; }
+      .actions{ justify-content:flex-end; }
+      .title h1{ font-size: 30px; }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <header>
+      <div class="title">
+        <span style="font-size:26px;">📝</span>
+        <div>
+          <h1>Mes Tâches</h1>
+          <div class="badge">pink mode ✨</div>
+        </div>
+      </div>
 
-<div class="container">
-    <h1>📝 Mes Tâches</h1>
-
-    <div style="text-align: center;">
-        <a href="{{ url_for('ajouter') }}" class="btn-add"> NEW TASK </a>
-    </div>
+      <a href="{{ url_for('ajouter') }}" class="btn-add">➕ NEW TASK</a>
+    </header>
 
     <div class="liste-taches">
-        {% for tache in taches %}
-            <div class="tache-card {% if tache['est_terminee'] %}terminee{% endif %}">
-                <div class="contenu">
-                    <h3>{{ tache['titre'] }}</h3>
-                    
-                    {% if tache['description'] %}
-                        <p>{{ tache['description'] }}</p>
-                    {% endif %}
-                    
-                    <small>📅 
-                        {% if tache['date_echeance'] %}
-                            Échéance : {{ tache['date_echeance'] }}
-                        {% else %}
-                            Pas de date limite
-                        {% endif %}
-                    </small>
-                </div>
+      {% for tache in taches %}
+        <div class="tache-card {% if tache['est_terminee'] %}terminee{% endif %}">
+          <div class="contenu">
+            <h3>{{ tache['titre'] }}</h3>
 
-                <div class="actions">
-                    <form action="{{ url_for('terminer', id=tache['id']) }}" method="post">
-                        {% if not tache['est_terminee'] %}
-                            <button type="submit" class="btn-check" title="Marquer comme fait"> DONE </button>
-                        {% else %}
-                            <button type="submit" class="btn-undo" title="Rétablir la tâche"> REDO </button>
-                        {% endif %}
-                    </form>
+            {% if tache['description'] %}
+              <p>{{ tache['description'] }}</p>
+            {% endif %}
 
-                    <form action="{{ url_for('supprimer', id=tache['id']) }}" method="post">
-                        <button type="submit" class="btn-delete" onclick="return confirm('Abandonner ?')">🗑</button>
-                    </form>
-                </div>
-            </div>
-        {% else %}
-            <div style="text-align:center; padding: 40px; color: #999;">
-                <p>YOU ROCK ! No more tasks for now.</p>
-            </div>
-        {% endfor %}
+            <small>📅
+              {% if tache['date_echeance'] %}
+                Échéance : {{ tache['date_echeance'] }}
+              {% else %}
+                Pas de date limite
+              {% endif %}
+            </small>
+          </div>
+
+          <div class="actions">
+            <form action="{{ url_for('terminer', id=tache['id']) }}" method="post">
+              {% if not tache['est_terminee'] %}
+                <button type="submit" class="btn-check" title="Marquer comme fait">✅ DONE</button>
+              {% else %}
+                <button type="submit" class="btn-undo" title="Rétablir la tâche">↩️ REDO</button>
+              {% endif %}
+            </form>
+
+            <form action="{{ url_for('supprimer', id=tache['id']) }}" method="post">
+              <button type="submit" class="btn-delete" onclick="return confirm('Abandonner ?')">🗑</button>
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <div class="empty">
+          <span class="heart">💖</span>
+          YOU ROCK ! No more tasks for now.
+        </div>
+      {% endfor %}
     </div>
-</div>
-
+  </div>
 </body>
 </html>
