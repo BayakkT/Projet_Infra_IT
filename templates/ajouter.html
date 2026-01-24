@@ -1,48 +1,194 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADD A TASK</title>
-    <style>
-        body { font: 'Magneto', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
-        .form-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9em; }
-        input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #dcdcdc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
-        input:focus, textarea:focus { border-color: #28a745; outline: none; box-shadow: 0 0 5px rgba(40, 167, 69, 0.2); }
-        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 25px; transition: background 0.3s; }
-        button:hover { background: #218838; }
-        .retour { display: block; text-align: center; margin-top: 20px; color: #7f8c8d; text-decoration: none; font-size: 0.9em; }
-        .retour:hover { text-decoration: underline; }
-        /* Style pour les erreurs */
-        .error-message { background-color: #f8d7da; color: purple; padding: 10px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
-    </style>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvelle Tâche</title>
 
-<div class="form-container">
-    <h2>Nouvelle Tâche</h2>
-    
+  <!-- Police girly -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#fff7fb;
+      --bg2:#f6f0ff;
+      --card:#ffffff;
+      --text:#2c2a33;
+      --muted:#7a7486;
+
+      --pink:#ff4fa3;
+      --lav:#a77dff;
+
+      --shadow: 0 18px 50px rgba(33, 18, 68, .10);
+      --shadow2: 0 10px 25px rgba(33, 18, 68, .08);
+      --radius: 22px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: "Quicksand", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 20% 10%, var(--bg2), transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, #ffe3f2, transparent 55%),
+        linear-gradient(180deg, var(--bg1), #ffffff);
+      min-height:100vh;
+      padding: 40px 16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+    }
+
+    .form-container{
+      width: min(680px, 100%);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(167,125,255,.18);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      position: relative;
+      overflow:hidden;
+    }
+
+    .form-container::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 140px at 20% 0%, rgba(255,79,163,.16), transparent 55%),
+                  radial-gradient(500px 160px at 90% 20%, rgba(167,125,255,.16), transparent 55%);
+      pointer-events:none;
+    }
+
+    .header{
+      position:relative;
+      z-index:1;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom: 14px;
+    }
+    h2{
+      font-family:"Playfair Display", serif;
+      margin:0;
+      font-size: 30px;
+    }
+    .sub{
+      position:relative;
+      z-index:1;
+      color: var(--muted);
+      margin: 6px 0 16px 0;
+      font-weight: 700;
+    }
+
+    label{
+      position:relative;
+      z-index:1;
+      display:block;
+      margin-top: 14px;
+      font-weight: 800;
+      font-size: 0.95em;
+    }
+
+    input, textarea{
+      position:relative;
+      z-index:1;
+      width:100%;
+      padding: 12px 14px;
+      margin-top: 6px;
+      border: 1px solid rgba(255,79,163,.18);
+      border-radius: 14px;
+      font-size: 16px;
+      background: rgba(255,255,255,.9);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus{
+      border-color: rgba(167,125,255,.55);
+      box-shadow: 0 0 0 4px rgba(167,125,255,.15);
+    }
+
+    .error-message{
+      position:relative;
+      z-index:1;
+      background: rgba(255,79,163,.12);
+      border: 1px solid rgba(255,79,163,.20);
+      color: #8a1c57;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: 14px;
+      margin: 10px 0 8px 0;
+    }
+
+    .btn{
+      position:relative;
+      z-index:1;
+      width:100%;
+      padding: 13px 14px;
+      margin-top: 18px;
+      border:0;
+      border-radius: 999px;
+      cursor:pointer;
+      font-size: 16px;
+      font-weight: 900;
+      color:white;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      box-shadow: 0 14px 28px rgba(255,79,163,.22);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active{ transform: translateY(0); filter: brightness(.98); }
+
+    .retour{
+      position:relative;
+      z-index:1;
+      display:block;
+      text-align:center;
+      margin-top: 14px;
+      color:#6b4bd6;
+      text-decoration:none;
+      font-weight: 900;
+    }
+    .retour:hover{ text-decoration: underline; }
+
+    .req{
+      color: var(--pink);
+      font-weight: 900;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <div class="header">
+      <span style="font-size:28px;">💖</span>
+      <h2>Nouvelle Tâche</h2>
+    </div>
+    <div class="sub">Ajoute une tâche cute & organise ta journée ✨</div>
+
     {% if error %}
-        <div class="error-message">{{ error }}</div>
+      <div class="error-message">{{ error }}</div>
     {% endif %}
 
     <form method="post">
-        <label for="titre">Titre de la tâche <span style="color: purple;">*</span></label>
-        <input type="text" id="titre" name="titre" placeholder="Ex: Devoir de Math" required>
+      <label for="titre">Titre de la tâche <span class="req">*</span></label>
+      <input type="text" id="titre" name="titre" placeholder="Ex: Devoir de Math" required>
 
-        <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" placeholder="Details"></textarea>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4" placeholder="Détails..."></textarea>
 
-        <label for="date_echeance">Date d'échéance</label>
-        <input type="date" id="date_echeance" name="date_echeance">
+      <label for="date_echeance">Date d'échéance</label>
+      <input type="date" id="date_echeance" name="date_echeance">
 
-        <button type="submit">Enregistrer la tâche</button>
+      <button type="submit" class="btn">💾 Enregistrer la tâche</button>
     </form>
 
     <a href="{{ url_for('index') }}" class="retour">← Retour à la liste</a>
-</div>
-
+  </div>
 </body>
 </html>
