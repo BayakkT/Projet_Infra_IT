@@ -1,17 +1,9 @@
-DROP TABLE IF EXISTS livres;
-DROP TABLE IF EXISTS emprunts;
+DROP TABLE IF EXISTS taches;
 
-CREATE TABLE livres (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    titre TEXT NOT NULL,
-    auteur TEXT NOT NULL,
-    stock INTEGER NOT NULL DEFAULT 1
-);
-
-CREATE TABLE emprunts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    livre_id INTEGER NOT NULL,
-    emprunteur TEXT NOT NULL,
-    date_emprunt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (livre_id) REFERENCES livres (id)
+CREATE TABLE taches (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  titre TEXT NOT NULL,
+  description TEXT,
+  date_echeance TEXT,
+  est_terminee INTEGER NOT NULL DEFAULT 0
 );
