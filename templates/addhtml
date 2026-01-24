@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une tâche</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
+        .form-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9em; }
+        input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #dcdcdc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        input:focus, textarea:focus { border-color: #28a745; outline: none; box-shadow: 0 0 5px rgba(40, 167, 69, 0.2); }
+        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 25px; transition: background 0.3s; }
+        button:hover { background: #218838; }
+        .retour { display: block; text-align: center; margin-top: 20px; color: #7f8c8d; text-decoration: none; font-size: 0.9em; }
+        .retour:hover { text-decoration: underline; }
+        /* Style pour les erreurs */
+        .error-message { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Nouvelle Tâche</h2>
+    
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <label for="titre">Titre de la tâche <span style="color: red;">*</span></label>
+        <input type="text" id="titre" name="titre" placeholder="Ex: Faire les courses" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" placeholder="Détails de la tâche..."></textarea>
+
+        <label for="date_echeance">Date d'échéance</label>
+        <input type="date" id="date_echeance" name="date_echeance">
+
+        <button type="submit">Enregistrer la tâche</button>
+    </form>
+
+    <a href="{{ url_for('index') }}" class="retour">← Retour à la liste</a>
+</div>
+
+</body>
+</html>
