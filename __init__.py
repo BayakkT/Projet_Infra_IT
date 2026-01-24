@@ -23,10 +23,8 @@ def ajouter():
         description = request.form.get('description')
         date_echeance = request.form.get('date_echeance')
 
-        # Petite vérification de sécurité
         if not titre:
-            # Optionnel : envoyer un message d'alerte à l'utilisateur
-            return render_template('ajouter.html', error="Le titre est obligatoire !")
+            return render_template('ajouter.html', error="Must enter a Title !")
 
         conn = get_db_connection()
         conn.execute('INSERT INTO taches (titre, description, date_echeance) VALUES (?, ?, ?)',
@@ -48,8 +46,6 @@ def supprimer(id):
 @app.route('/terminer/<int:id>', methods=('POST',))
 def terminer(id):
     conn = get_db_connection()
-    # On bascule l'état (si c'est 0 ça devient 1, si c'est 1 ça devient 0)
-    # C'est plus flexible que de forcer à 1
     conn.execute('UPDATE taches SET est_terminee = 1 - est_terminee WHERE id = ?', (id,))
     conn.commit()
     conn.close()
