@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Tâches</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background-color: #f8f9fa; color: #333; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        
+        .btn-add { display: inline-block; width: auto; padding: 12px 25px; background: #28a745; color: white; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; margin-bottom: 20px; }
+        .btn-add:hover { background: #218838; transform: translateY(-1px); }
+        
+        .tache-card { border: 1px solid #eee; padding: 20px; margin-bottom: 15px; border-radius: 10px; background: #fff; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .tache-card:hover { border-color: #007bff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        
+        /* Style spécial pour les tâches terminées */
+        .terminee { background-color: #fcfcfc; border-left: 5px solid #6c757d; opacity: 0.7; }
+        .terminee h3 { text-decoration: line-through; color: #6c757d; }
+
+        .contenu h3 { margin: 0 0 5px 0; font-size: 1.2em; }
+        .contenu p { margin: 5px 0; color: #555; font-size: 0.95em; }
+        .contenu small { color: #888; display: block; margin-top: 8px; }
+
+        .actions { display: flex; gap: 10px; }
+        form { margin: 0; }/
+        
+        button { cursor: pointer; padding: 8px 12px; border: none; border-radius: 5px; font-size: 14px; font-weight: 500; transition: 0.2s; display: flex; align-items: center; gap: 5px; }
+        .btn-delete { background: #fff; color: #dc3545; border: 1px solid #dc3545; }
+        .btn-delete:hover { background: #dc3545; color: white; }
+        
+        .btn-check { background: #007bff; color: white; }
+        .btn-check:hover { background: #0056b3; }
+        .btn-undo { background: #6c757d; color: white; } /* Pour annuler l'état terminé */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 Mes Tâches</h1>
+
+    <div style="text-align: center;">
+        <a href="{{ url_for('ajouter') }}" class="btn-add"> NEW TASK </a>
+    </div>
+
+    <div class="liste-taches">
+        {% for tache in taches %}
+            <div class="tache-card {% if tache['est_terminee'] %}terminee{% endif %}">
+                <div class="contenu">
+                    <h3>{{ tache['titre'] }}</h3>
+                    
+                    {% if tache['description'] %}
+                        <p>{{ tache['description'] }}</p>
+                    {% endif %}
+                    
+                    <small>📅 
+                        {% if tache['date_echeance'] %}
+                            Échéance : {{ tache['date_echeance'] }}
+                        {% else %}
+                            Pas de date limite
+                        {% endif %}
+                    </small>
+                </div>
+
+                <div class="actions">
+                    <form action="{{ url_for('terminer', id=tache['id']) }}" method="post">
+                        {% if not tache['est_terminee'] %}
+                            <button type="submit" class="btn-check" title="Marquer comme fait"> DONE </button>
+                        {% else %}
+                            <button type="submit" class="btn-undo" title="Rétablir la tâche"> REDO </button>
+                        {% endif %}
+                    </form>
+
+                    <form action="{{ url_for('supprimer', id=tache['id']) }}" method="post">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Abandonner ?')">🗑</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div style="text-align:center; padding: 40px; color: #999;">
+                <p>YOU ROCK ! No more tasks for now.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>
